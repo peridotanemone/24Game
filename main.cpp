@@ -2,6 +2,7 @@
 #include <deque>
 #include <array>
 #include <algorithm>
+#include <string>
 
 using namespace std;
 constexpr array<char, 4> operators{'*','-','+','/'};
@@ -34,11 +35,12 @@ void solve(deque<int>& arr)
 		return;
 	}
 	for (int i = 0; i < 4; i++) {
-		if (arr.size() > 0)
+		if (arr.size() > 1)
 		{
 			deque<int> l;
 			copy(arr.begin(), arr.end(), back_inserter(l));
 			int n = evaluate(arr[0], arr[1], operators[i]);
+			cout << arr[0] << " " << operators[i] << " " << arr[1] << "\n";
 			arr.pop_front();
 			arr.pop_front();
 			arr.push_back(n);
