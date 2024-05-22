@@ -1,9 +1,10 @@
 #include <iostream>
 #include <deque>
 #include <array>
+#include <algorithm>
 
 using namespace std;
-constexpr array<char, 4> operators{'+','-','*','/'};
+constexpr array<char, 4> operators{'*','-','+','/'};
 
 int evaluate(int x, int y, char op)
 {
@@ -25,32 +26,35 @@ int evaluate(int x, int y, char op)
 	}
 }
 
-void solve(deque<int> &arr, int s_index, int l_index)
+void solve(deque<int>& arr)
 {
 	if ((arr[0] == 24) && (arr.size() == 1))
 	{
+		cout << "Solved";
 		return;
 	}
 	for (int i = 0; i < 4; i++) {
-		for (int j = 0; j < 4; j++) {
-			if (arr.size() > 0)
-			{
-				arr[1] = evaluate(arr[s_index], arr[l_index], operators[j]);
-				arr.pop_front();
-				solve(arr, s_index + i, l_index + i);
-
-			}
+		if (arr.size() > 0)
+		{
+			deque<int> l;
+			copy(arr.begin(), arr.end(), back_inserter(l));
+			int n = evaluate(arr[0], arr[1], operators[i]);
+			arr.pop_front();
+			arr.pop_front();
+			arr.push_back(n);
+			solve(arr);
+			arr = l;
 		}
 	}
+	return;
 }
 
 int main()
 {
 	deque<int> inputs;
+	int x;
 	cout << "Type in four integers: \n";
-	for (int i = 0; i < 4; i++) { cin >> inputs[i]; }
-
-
-
+	for (int i = 0; i < 4; i++) { cin >> x; inputs.push_back(x); }
+	solve(inputs);
 	return 0;
 }
