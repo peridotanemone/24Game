@@ -9,7 +9,7 @@
 using namespace std;
 constexpr array<char, 4> operators{'+','-','*','/'};
 
-int evaluate(int x, int y, char op)
+Fraction evaluate(Fraction x, Fraction y, char op)
 {
 	switch (op)
 	{
@@ -24,14 +24,12 @@ int evaluate(int x, int y, char op)
 
 	case '/':
 		return (x / y);
-
-	default: return -1;
 	}
 }
 
-void solve(deque<int>& arr, deque<string>& moves)
+void solve(deque<Fraction>& arr, deque<string>& moves)
 {
-	if ((arr[0] == 24) && (arr.size() == 1))
+	if ((arr[0].getIntValue() == 24) && (arr.size() == 1))
 	{
 		cout << "Solved \n";
 		for (auto e : moves) { cout << e; }
@@ -40,10 +38,12 @@ void solve(deque<int>& arr, deque<string>& moves)
 	for (int i = 0; i < 4; i++) {
 		if (arr.size() > 1)
 		{
-			deque<int> l;
+			deque<Fraction> l;
 			copy(arr.begin(), arr.end(), back_inserter(l));
-			int n = evaluate(arr[0], arr[1], operators[i]);
-			string output = to_string(arr[0]) + " " + operators[i] + " " + to_string(arr[1]) + " = " + to_string(n) + "\n";
+			Fraction n = evaluate(arr[0], arr[1], operators[i]);
+			string output = arr[0].stringify() + " " + operators[i] + " "
+				+ arr[1].stringify() + " = " + n.stringify() + "\n";
+			cout << output;
 			moves.push_back(output);
 			arr.pop_front();
 			arr.pop_front();
@@ -56,7 +56,7 @@ void solve(deque<int>& arr, deque<string>& moves)
 	return;
 }
 
-void createPermutations(deque<int>& in, deque<deque<int>>& out, int l, int r)
+void createPermutations(deque<Fraction>& in, deque<deque<Fraction>>& out, int l, int r)
 {
 	if (l == r)
 	{
@@ -66,22 +66,26 @@ void createPermutations(deque<int>& in, deque<deque<int>>& out, int l, int r)
 	for (int i = l; i < r; i++)
 	{
 		swap(in[l], in[i]);
-
 		createPermutations(in, out, l + 1, r);
-
 		swap(in[i], in[l]);
 	}
 }
 
 int main()
 {
-	deque<int> inputs;
-	deque<deque<int>> permutations;
+	deque<int> inputs{};
+	deque<Fraction> inputsF{};
+	deque<deque<Fraction>> permutations{};
 	inputs.resize(4);
 	deque<string> moves{};
 	cout << "Type in four integers: \n";
 	for (int i = 0; i < 4; i++) { cin >> inputs[i]; }
-	createPermutations(inputs, permutations, 0, 3);
+	for (auto e : inputs)
+	{
+		Fraction tmp(e, 1);
+		inputsF.push_back(tmp);
+	}
+	createPermutations(inputsF, permutations, 0, 3);
 	for (auto e : permutations) { solve(e, moves); }
 	return 0;
 }

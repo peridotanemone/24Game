@@ -6,7 +6,17 @@ Fraction::Fraction(int numer, int denom) : numerator(numer), denominator(denom) 
 
 std::string Fraction::stringify()
 {
-	return std::to_string(this->numerator) + '/' + std::to_string(this->denominator);
+	if (this->numerator % this->denominator != 0) {
+		return std::to_string(this->numerator) + '/' + std::to_string(this->denominator);
+	}
+	else {
+		return std::to_string(getIntValue());
+	}
+}
+
+int Fraction::getIntValue()
+{
+	return this->numerator % this->denominator == 0 ? this->numerator / this->denominator : -1;
 }
 
 Fraction Fraction::simplified()
@@ -23,6 +33,12 @@ int GCD(int a, int b)
 		return a == 0 ? b : a;
 	}
 	return GCD(b, a % b);
+}
+
+void Fraction::setValues(int n, int d)
+{
+	this->numerator = n;
+	this->denominator = d;
 }
 
 Fraction operator+(Fraction const& a, Fraction const& b)
