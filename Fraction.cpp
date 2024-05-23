@@ -1,6 +1,13 @@
+#include <string>
+
 #include "Fraction.h"
 
 Fraction::Fraction(int numer, int denom) : numerator(numer), denominator(denom) {}
+
+std::string Fraction::stringify()
+{
+	return std::to_string(this->numerator) + '/' + std::to_string(this->denominator);
+}
 
 Fraction Fraction::simplified()
 {

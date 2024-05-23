@@ -4,6 +4,8 @@
 #include <algorithm>
 #include <string>
 
+#include "Fraction.h"
+
 using namespace std;
 constexpr array<char, 4> operators{'+','-','*','/'};
 
